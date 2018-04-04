@@ -27,6 +27,10 @@ var view = {
 
 	winner: function () {
 
+	},
+
+	lose: function () {
+		alert('u lose');
 	}
 };
 
@@ -37,8 +41,8 @@ var view = {
 
 var model = {
 	sizeMap: 7,
-	numBurger: 10,
-	lengthBurger: 1,
+	numBurger: 6,
+	lengthBurger: 3,
 	destroyBurger: 0,
 
 	mapBurger: [
@@ -47,14 +51,12 @@ var model = {
 		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "red"  },
 		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "blue" },
 		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "blue" },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "blue" },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "red"  },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "red"  },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "red"  },
 		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "blue" }
+
 	],
 
 	shot: function (id) {
+		console.log(this);
 		for (var i = 0; i < this.numBurger; i ++) {
 			var mapBurger = this.mapBurger[i];
 			var posDamage = mapBurger.position.indexOf(id);
@@ -84,7 +86,7 @@ var model = {
 		return id;
 	},
 
-	checkDestroyedShip: function (burger) {
+	checkDestroyedBurger: function (burger) {
 		for (var i = 0; i < this.lengthBurger; i++) {
 			if (burger.damage[i] === "") {
 				return false;
@@ -151,16 +153,50 @@ var model = {
 
 var controller = {
 
-	numShots: 0,
+	numShots: 3,
 
 	createBurger: function () {
-		console.log('hello');
 		model.createMapBurger();
+		view.showCount(this.numShots);
+	},
+
+	shotShip: function (id) {
+		
+
+		if (id) {
+			console.log('ee = ' , id);
+			var loss = model.shot(id);
+			console.log('loss = ', loss);
+			if (loss === true) {
+				view.showMsg("Этот бургер уже найден!");
+			} else if (loss.status === 3) {
+				view.showShip(loss.id, loss.color);
+				view.showMsg("Отлично три бургера найдены!");
+			} else if (loss.status === 1) {
+				view.showShip(loss.id, loss.color);
+				view.showMsg("Ты ухватил эту булку!");
+			} else if (typeof(loss) == 'string') {
+				view.showAsteroid(loss);
+				view.showMsg("Горячие котлетки были здесь");
+				this.numShots--;
+				view.showCount(this.numShots);
+				if(this.numShots === 0){
+					view.lose();
+				}
+			}
+			
+			if (loss && (model.destroyBurger === model.numBurger)) {
+				// var count = Math.round((model.numBurger * 3 / this.numShots) * 1000);
+				view.showMsg("Отлично! Ты нашел все ketch up и смог накормить друзей!");
+				// view.showCount(count);
+			}
+		}
 	},
 
 	hoverClick: function (id) {
 		var el = document.getElementById(id);
-
+		console.log(el);
+		console.log(id);
 		el.onmouseover = function (e) {
 			e = e || window.event;
 
@@ -168,9 +204,12 @@ var controller = {
 				e.target.style.transition = '0.5s';
 				e.target.style.backgroundColor = 'rgba(104, 142, 218, 0.33)';
 
+
 				e.target.onclick = function () {
 					var c = this.getAttribute('data-title');
-					console.log('c = ', c);
+					var k = this.id;
+
+					controller.shotShip(k);
 				};
 
 			}
@@ -184,25 +223,23 @@ var controller = {
 		};
 	},
 
-	createDataTitle: function () {
-		var elCell = document.getElementsByTagName('td');
-		for (var i = 0; i < elCell.length; i++) {
-			if (elCell[i].id !== '') {
-				var value = elCell[i].getAttribute('id');
-				console.log('value = ', value);
-				var element = elCell[i];
-				console.log('elemtn = ', element);
-				var letter = element.parentNode.firstElementChild.firstElementChild.innerHTML;
+	// createDataTitle: function () {
+	// 	var elCell = document.getElementsByTagName('td');
+	// 	for (var i = 0; i < elCell.length; i++) {
+	// 		if (elCell[i].id !== '') {
+	// 			var value = elCell[i].getAttribute('id');
+	// 			var element = elCell[i];
+	// 			var letter = element.parentNode.firstElementChild.firstElementChild.innerHTML;
 
-				elCell[i].setAttribute('data-title', letter + value.charAt(1));
-			}
-		};
-	},
+	// 			elCell[i].setAttribute('data-title', letter + value.charAt(1));
+	// 		}
+	// 	};
+	// },
 
-	hBtnClick: function () {
-		var el = document.getElementById('crdInput');
+	// hBtnClick: function () {
+	// 	var el = document.getElementById('crdInput');
 
-	}
+	// }
 
 
 
@@ -232,10 +269,9 @@ var controller = {
 		control: function () {
 
 			// Генерируем позиции кораблей и помещаем в массив spaceships
-			console.log('there point');
 			controller.createBurger();
 			// Создаем атрибут (data-title) для ячеек td (кроме 1 столбца и 1 ряда)
-			controller.createDataTitle();
+			// controller.createDataTitle();
 
 
 		},
@@ -243,18 +279,21 @@ var controller = {
 		// event() - Здесь мы регистрируем, вызываем "Обработчики событий"
 		event: function () {
 
-			var btnShot = document.getElementById("btnShot");
+			// var btnShot = document.getElementById("btnShot");
 			// Регистрируем обработчик события "тип события: onclick", "цель события: элемент с id btnShot",
 			// "обработчик события: hBtnClick()"
-			btnShot.onclick = controller.hBtnClick;
+			// btnShot.onclick = controller.hBtnClick;
 
-			var elCrdInput = document.getElementById("crdInput");
-			elCrdInput.onkeypress = controller.hKeyPress;
+			// var elCrdInput = document.getElementById("crdInput");
+			// elCrdInput.onkeypress = controller.hKeyPress;
 
 			/* 
 				Вызываем метод "hoverClick()" объекта "controller".
 				Метод "hoverClick()" также относиться к обработчику события. Внутри данного метода уже содержаться обработчики событий.
 			*/
+
+			console.log('it true');
+
 			controller.hoverClick("area_game__table");
 
 		}
