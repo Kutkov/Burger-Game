@@ -11,7 +11,7 @@ var view = {
 		elMessage.innerHTML = msg;
 	},
 
-	showShip: function (id, color) {
+	showBurger: function (id, color) {
 		var elShip = document.getElementById(id);
 		if (color == 'red') {
 			elShip.setAttribute('class', 'ship-red');
@@ -25,12 +25,35 @@ var view = {
 		elAsteroid.setAttribute('class', 'asteroid');
 	},
 
+	hideBurger: function() {
+		var elBurgerRed = document.getElementsByClassName('ship-red');
+		var elBurgerBlue = document.getElementsByClassName('ship-blue');
+		var blue = elBurgerBlue.length;
+		var red = elBurgerRed.length;
+
+		for (var i = 0; i < blue; i++) {
+			elBurgerBlue[0].removeAttribute('class', 'ship-blue');
+		}		
+		for (var i = 0; i < red; i++) {
+			elBurgerRed[0].removeAttribute('class', 'ship-red');
+		}
+	},
+
+	hideAsteroid: function() {
+		var elAsteroid = document.getElementsByClassName('asteroid');
+		var asteroid = elAsteroid.length;
+
+		for (var i = 0; i < asteroid; i++){
+			elAsteroid[0].removeAttribute('class', 'asteroid');
+		}
+	},
+
 	winner: function () {
 
 	},
 
 	lose: function () {
-		alert('u lose');
+		// alert('u lose');
 	}
 };
 
@@ -141,7 +164,14 @@ var model = {
 				position = this.createBurgerPos();
 			} while (this.checkRepeatsPos(position));
 			this.mapBurger[i].position = position;
+			this.mapBurger[i].damage = ["", "", ""];
 		};
+	},
+
+	deleteMapBurger: function () {
+		for (var i = 0; i < this.numBurger; i++) {
+			this.mapBurger[i].position = '0';
+		}
 	}
 
 };
@@ -160,7 +190,7 @@ var controller = {
 		view.showCount(this.numShots);
 	},
 
-	shotShip: function (id) {
+	shotBurger: function (id) {
 		
 
 		if (id) {
@@ -170,10 +200,10 @@ var controller = {
 			if (loss === true) {
 				view.showMsg("Этот бургер уже найден!");
 			} else if (loss.status === 3) {
-				view.showShip(loss.id, loss.color);
+				view.showBurger(loss.id, loss.color);
 				view.showMsg("Отлично три бургера найдены!");
 			} else if (loss.status === 1) {
-				view.showShip(loss.id, loss.color);
+				view.showBurger(loss.id, loss.color);
 				view.showMsg("Ты ухватил эту булку!");
 			} else if (typeof(loss) == 'string') {
 				view.showAsteroid(loss);
@@ -182,6 +212,10 @@ var controller = {
 				view.showCount(this.numShots);
 				if(this.numShots === 0){
 					view.lose();
+					view.hideBurger();
+					view.hideAsteroid();
+					this.numShots = 3;
+					this.createBurger();
 				}
 			}
 			
@@ -206,10 +240,10 @@ var controller = {
 
 
 				e.target.onclick = function () {
-					var c = this.getAttribute('data-title');
+					// var c = this.getAttribute('data-title');
 					var k = this.id;
 
-					controller.shotShip(k);
+					controller.shotBurger(k);
 				};
 
 			}
@@ -221,28 +255,7 @@ var controller = {
 				e.target.style.backgroundColor = 'inherit';
 			}
 		};
-	},
-
-	// createDataTitle: function () {
-	// 	var elCell = document.getElementsByTagName('td');
-	// 	for (var i = 0; i < elCell.length; i++) {
-	// 		if (elCell[i].id !== '') {
-	// 			var value = elCell[i].getAttribute('id');
-	// 			var element = elCell[i];
-	// 			var letter = element.parentNode.firstElementChild.firstElementChild.innerHTML;
-
-	// 			elCell[i].setAttribute('data-title', letter + value.charAt(1));
-	// 		}
-	// 	};
-	// },
-
-	// hBtnClick: function () {
-	// 	var el = document.getElementById('crdInput');
-
-	// }
-
-
-
+	}
 
 };
 
@@ -278,21 +291,6 @@ var controller = {
 		
 		// event() - Здесь мы регистрируем, вызываем "Обработчики событий"
 		event: function () {
-
-			// var btnShot = document.getElementById("btnShot");
-			// Регистрируем обработчик события "тип события: onclick", "цель события: элемент с id btnShot",
-			// "обработчик события: hBtnClick()"
-			// btnShot.onclick = controller.hBtnClick;
-
-			// var elCrdInput = document.getElementById("crdInput");
-			// elCrdInput.onkeypress = controller.hKeyPress;
-
-			/* 
-				Вызываем метод "hoverClick()" объекта "controller".
-				Метод "hoverClick()" также относиться к обработчику события. Внутри данного метода уже содержаться обработчики событий.
-			*/
-
-			console.log('it true');
 
 			controller.hoverClick("area_game__table");
 
