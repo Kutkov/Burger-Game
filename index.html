@@ -11,6 +11,8 @@
     <!-- Bootstrap core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
+    <script src="js/lib/typed.min.js" type="text/javascript"></script>
+
     <!-- Custom styles for this template -->
     <style>
     	html,
@@ -19,18 +21,8 @@
 		}
 
 		body {
-		  display: -ms-flexbox;
-		  display: -webkit-box;
-		  display: flex;
-		  -ms-flex-align: center;
-		  -ms-flex-pack: center;
-		  -webkit-box-align: center;
-		  align-items: center;
-		  -webkit-box-pack: center;
-		  justify-content: center;
-		  padding-top: 40px;
-		  padding-bottom: 40px;
-		  background-color: #f5f5f5;
+		  background: black url(https://s.cdpn.io/16327/texture_bg.jpg) no-repeat 50% 0px;
+		  padding: 50px 0;
 		}
 
 		.form-signin {
@@ -38,48 +30,226 @@
 		  max-width: 330px;
 		  padding: 15px;
 		  margin: 0 auto;
+		  visibility: hidden;
+		  opacity: 0.01;
+		  transition: 5s;
 		}
-		.form-signin .checkbox {
-		  font-weight: 400;
+		
+		.window-block{
+			position: absolute;
+			height:100%;
+			width: 100%;
+			background: rgba(0,0,0, .4);
+			z-index: 99999;
 		}
-		.form-signin .form-control {
-		  position: relative;
-		  box-sizing: border-box;
-		  height: auto;
-		  padding: 10px;
-		  font-size: 16px;
+
+		#myCanvas {
+		  height: 260px;
+		  width: 100%;
+		  /*max-width: 99%;*/
+		  min-width: 800px;
+		  position: absolute;
+		  bottom: 0;
+		  left: 0;
 		}
-		.form-signin .form-control:focus {
-		  z-index: 2;
+		.checkbox{
+			margin-top: 20px;
+			color: #ccc;
 		}
-		.form-signin input[type="email"] {
-		  margin-bottom: -1px;
-		  border-bottom-right-radius: 0;
-		  border-bottom-left-radius: 0;
+		.title{
+			max-width: 600px;
+			margin: 50px auto;
+			color: #eee;
 		}
-		.form-signin input[type="password"] {
-		  margin-bottom: 10px;
-		  border-top-left-radius: 0;
-		  border-top-right-radius: 0;
+		.typed-cursor{
+			color: #fff;
 		}
+
     </style>
+
   </head>
 
   <body class="text-center">
-    <form class="form-signin">
-      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="name" id="inputName" class="form-control" placeholder="Your name" required autofocus>
+
+	<!-- <div class="window-block"></div> -->
+	<canvas id="myCanvas" height="200" width="800"></canvas>
+
+	<div class="container-element" style="max-width: 500px; margin: 30px auto;">
+		<span style="color: #fff;" class="element"></span>
+	</div>
+
+    <form class="form-signin" id="form">
+      <img class="mb-4" src="img/burger.png" alt="" width="80" height="72">
+      <input type="name" id="inputName" class="form-control" placeholder="Your name">
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me" id="checkbox"> Соглашение
         </label>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
-  </body>
+    
+      <script src="js/registration.js"></script>
 
-  <script src="js/registration.js"></script>
+	  <script>
+
+	  	// typed begin
+	  	var typed = new Typed(".element", {
+		  strings: ["Lorem ipsum dolor sit amet^1000", "Lorem ipsum dolor consectetur adipisicing elit."],
+		  smartBackspace: false, // Default value
+		  typeSpeed: 40,
+		  startDelay: 2000,
+		  backSpeed: 80,
+		  onComplete: (self) => {activeLog();},
+		  smartBackspace: true
+		});
+	  	// typed end
+	  	function activeLog(){
+	  		form = document.getElementById('form');
+	  		form.style.visibility = 'visible';
+	  		form.style.opacity = '1';
+	  	}
+	  	// smog begin
+
+		canvasWidth = 1600;
+		canvasHeight = 200;
+
+		pCount = 0;
+
+
+		pCollection = new Array();
+
+		var puffs = 1;
+		var particlesPerPuff = 2000;
+		var img = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/85280/smoke2.png';
+
+		var smokeImage = new Image();
+		smokeImage.src = img;
+
+		for (var i1 = 0 ; i1 < puffs; i1++)
+		{
+		  var puffDelay = i1 * 1500; //300 ms between puffs
+
+		  for (var i2 = 0 ; i2 < particlesPerPuff; i2++)
+		  {
+		    addNewParticle((i2*50) + puffDelay);    
+		  }
+		}
+
+
+		draw(new Date().getTime(), 3000)
+
+
+
+		function addNewParticle(delay)
+		{
+
+		  var p = {};
+		  p.top = canvasHeight;
+		  p.left = randBetween(-200,800);
+
+		  p.start = new Date().getTime() + delay;
+		  p.life = 8000;
+		  p.speedUp = 30;
+
+
+		  p.speedRight = randBetween(0,20);
+
+		  p.rot = randBetween(-1,1);
+		  p.red = Math.floor(randBetween(0,255));
+		  p.blue = Math.floor(randBetween(0,255));
+		  p.green = Math.floor(randBetween(0,255));
+
+
+		  p.startOpacity = .3
+		  p.newTop = p.top;
+		  p.newLeft = p.left;
+		  p.size = 200;
+		  p.growth = 10;
+
+		  pCollection[pCount] = p;
+		  pCount++;
+
+
+		}
+
+		function draw(startT, totalT)
+		{
+		  //Timing
+		  var timeDelta = new Date().getTime() - startT;
+		  var stillAlive = false;
+
+		  //Grab and clear the canvas
+		  var c=document.getElementById("myCanvas");
+		  var ctx=c.getContext("2d");
+		  ctx.clearRect(0, 0, c.width, c.height);
+		  c.width = c.width;
+
+		  //Loop through particles
+		  for (var i= 0; i < pCount; i++)
+		  {    
+		    //Grab the particle
+		    var p = pCollection[i];
+
+		    //Timing
+		    var td = new Date().getTime() - p.start;
+		    var frac = td/p.life
+
+		    if (td > 0)
+		    {
+		      if (td <= p.life )
+		      { stillAlive = true; }
+
+		      //attributes that change over time
+		      var newTop = p.top - (p.speedUp * (td/1000));
+		      var newLeft = p.left + (p.speedRight * (td/1000));
+		      var newOpacity = Math.max(p.startOpacity * (1-frac),0);
+
+		      var newSize = p.size + (p.growth * (td/1000));
+		      p.newTop = newTop;
+		      p.newLeft = newLeft;
+
+		      //Draw!
+		      ctx.fillStyle = 'rgba(150,150,150,' + newOpacity + ')';      
+		      ctx.globalAlpha  = newOpacity;
+		      ctx.drawImage(smokeImage, newLeft, newTop, newSize, newSize);
+		    }
+		  }
+
+
+
+		  //Repeat if there's still a living particle
+		  if (stillAlive)
+		  {
+		    requestAnimationFrame(function(){draw(startT,totalT);}); 
+		  }
+		  else
+		  {
+		    clog(timeDelta + ": stopped");
+		  }
+		}
+
+		function randBetween(n1,n2)
+		{
+		  var r = (Math.random() * (n2 - n1)) + n1;
+		  return r;
+		}
+
+		function randOffset(n, variance)
+		{
+		  //e.g. variance could be 0.1 to go between 0.9 and 1.1
+		  var max = 1 + variance;
+		  var min = 1 - variance;
+		  var r = Math.random() * (max - min) + min;
+		  return n * r;
+		}
+
+		function clog(s)
+		{  
+		  console.log(s);
+		}
+
+		// smog end
+	  </script>
+  </body>
 </html>
