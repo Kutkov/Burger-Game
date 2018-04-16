@@ -30,7 +30,6 @@ var view = {
 		var elBurgerBlue = document.getElementsByClassName('ship-blue');
 		var blue = elBurgerBlue.length;
 		var red = elBurgerRed.length;
-
 		for (var i = 0; i < blue; i++) {
 			elBurgerBlue[0].removeAttribute('class', 'ship-blue');
 		}		
@@ -79,7 +78,7 @@ var model = {
 	],
 
 	shot: function (id) {
-		console.log(this);
+
 		for (var i = 0; i < this.numBurger; i ++) {
 			var mapBurger = this.mapBurger[i];
 			var posDamage = mapBurger.position.indexOf(id);
@@ -166,12 +165,6 @@ var model = {
 			this.mapBurger[i].position = position;
 			this.mapBurger[i].damage = ["", "", ""];
 		};
-	},
-
-	deleteMapBurger: function () {
-		for (var i = 0; i < this.numBurger; i++) {
-			this.mapBurger[i].position = '0';
-		}
 	}
 
 };
@@ -190,13 +183,31 @@ var controller = {
 		view.showCount(this.numShots);
 	},
 
+	clearMap: function() {
+		setTimeout(function(){
+			view.lose();
+			view.hideBurger();
+			view.hideAsteroid();
+				setTimeout(function(){
+					controller.numShots = 3;
+					controller.createBurger();
+				}, 800);
+		}, 1500);
+		// решил сделать всплывающий слой перекрывающий все поле, на нем можно разместить текст 
+
+	},
+
+	reMap: function() {
+		
+	},
+
 	shotBurger: function (id) {
 		
 
 		if (id) {
-			console.log('ee = ' , id);
+
 			var loss = model.shot(id);
-			console.log('loss = ', loss);
+
 			if (loss === true) {
 				view.showMsg("Этот бургер уже найден!");
 			} else if (loss.status === 3) {
@@ -211,11 +222,7 @@ var controller = {
 				this.numShots--;
 				view.showCount(this.numShots);
 				if(this.numShots === 0){
-					view.lose();
-					view.hideBurger();
-					view.hideAsteroid();
-					this.numShots = 3;
-					this.createBurger();
+					this.clearMap();
 				}
 			}
 			
@@ -229,8 +236,6 @@ var controller = {
 
 	hoverClick: function (id) {
 		var el = document.getElementById(id);
-		console.log(el);
-		console.log(id);
 		el.onmouseover = function (e) {
 			e = e || window.event;
 
@@ -245,7 +250,6 @@ var controller = {
 
 					controller.shotBurger(k);
 				};
-
 			}
 		};
 
@@ -255,6 +259,7 @@ var controller = {
 				e.target.style.backgroundColor = 'inherit';
 			}
 		};
+
 	}
 
 };
