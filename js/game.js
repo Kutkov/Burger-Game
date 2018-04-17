@@ -13,38 +13,36 @@ var view = {
 
 	showBurger: function (id, color) {
 		var elShip = document.getElementById(id);
-		if (color == 'red') {
-			elShip.setAttribute('class', 'ship-red');
-		} else if (color == 'blue') {
-			elShip.setAttribute('class', 'ship-blue');
-		}
+		elShip.setAttribute('class', color);
 	},
 
 	showAsteroid: function(id) {
 		var elAsteroid = document.getElementById(id);
-		elAsteroid.setAttribute('class', 'asteroid');
+		elAsteroid.setAttribute('class', 'brend');
 	},
 
-	hideBurger: function() {
-		var elBurgerRed = document.getElementsByClassName('ship-red');
-		var elBurgerBlue = document.getElementsByClassName('ship-blue');
-		var blue = elBurgerBlue.length;
-		var red = elBurgerRed.length;
-		for (var i = 0; i < blue; i++) {
-			elBurgerBlue[0].removeAttribute('class', 'ship-blue');
-		}		
-		for (var i = 0; i < red; i++) {
-			elBurgerRed[0].removeAttribute('class', 'ship-red');
+	showBodyWrapp: function() {
+		var bodyWrapp = document.getElementById('body-wrapp');
+		var btnNextRound = document.getElementById('next-round');
+		bodyWrapp.style.display = 'flex';
+		setTimeout(function() {
+			btnNextRound.style.visibility = 'visible';	
+		}, 1500);
+	},
+
+	clearClass: function() {
+		var elCell = document.getElementsByTagName("td");
+		for (var i = 0; i < elCell.length; i++) {
+			elCell[i].removeAttribute('class');
 		}
 	},
 
-	hideAsteroid: function() {
-		var elAsteroid = document.getElementsByClassName('asteroid');
-		var asteroid = elAsteroid.length;
+	hideBodyWrapp: function() {
+		var bodyWrapp = document.getElementById('body-wrapp');
+		var btnNextRound = document.getElementById('next-round');
+		bodyWrapp.style.display = 'none';
+		btnNextRound.style.visibility = 'hidden';	
 
-		for (var i = 0; i < asteroid; i++){
-			elAsteroid[0].removeAttribute('class', 'asteroid');
-		}
 	},
 
 	winner: function () {
@@ -68,12 +66,12 @@ var model = {
 	destroyBurger: 0,
 
 	mapBurger: [
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "red"  },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "blue" },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "red"  },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "blue" },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "blue" },
-		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "blue" }
+		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "burger0" },
+		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "burger1" },
+		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "burger2" },
+		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "burger3" },
+		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "burger4" },
+		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "burger5" }
 
 	],
 
@@ -176,7 +174,7 @@ var model = {
 
 var controller = {
 
-	numShots: 3,
+	numShots: 10,
 
 	createBurger: function () {
 		model.createMapBurger();
@@ -184,21 +182,16 @@ var controller = {
 	},
 
 	clearMap: function() {
+		view.showBodyWrapp();
 		setTimeout(function(){
-			view.lose();
-			view.hideBurger();
-			view.hideAsteroid();
+			view.clearClass();
 				setTimeout(function(){
-					controller.numShots = 3;
+					controller.numShots = 10;
 					controller.createBurger();
-				}, 800);
-		}, 1500);
+				}, 500);
+		}, 1000);
 		// решил сделать всплывающий слой перекрывающий все поле, на нем можно разместить текст 
 
-	},
-
-	reMap: function() {
-		
 	},
 
 	shotBurger: function (id) {
@@ -236,6 +229,7 @@ var controller = {
 
 	hoverClick: function (id) {
 		var el = document.getElementById(id);
+		var btnNextRound = document.getElementById('next-round');
 		el.onmouseover = function (e) {
 			e = e || window.event;
 
@@ -258,6 +252,10 @@ var controller = {
 			if (e.target.id !== '') {
 				e.target.style.backgroundColor = 'inherit';
 			}
+		};
+
+		btnNextRound.onclick = function () {
+			view.hideBodyWrapp();
 		};
 
 	}

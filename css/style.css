@@ -3,6 +3,7 @@ body {
     margin: 0px;
     padding: 0px;
     font-family: Verdana;
+    position: relative;
 }
 #area_game {
     width: 1004px;
@@ -10,12 +11,12 @@ body {
     margin: auto;
     padding: 0px;
     position: relative;
-    /*background: url("../img/bg.png") no-repeat;*/
+    background: url("../img/bg.png") no-repeat;
 }
 .area_game__user_count {
     color: #ccc;
-    float: left;
-    position: absolute;
+    /*float: left;*/
+    /*position: absolute;*/
     top: 32px;
     left: 10px;
     font-size: 20px;
@@ -31,6 +32,8 @@ body {
 }
 #area_game__user-message--msg {
     color: rgb(236, 236, 236);
+    display: block;
+    padding: 0 15px;
 }
 #area_game__table {
     left: 173px;
@@ -72,16 +75,87 @@ body {
     background-color: #ECECEC;
 }
 
+.burger0 {
+    background: url("../img/burger0.png") no-repeat center center !important;
+    transition: 0.5s;
+}
+.burger1 {
+    background: url("../img/burger1.png") no-repeat center center !important;
+    transition: 0.5s;
+}
+.burger2 {
+    background: url("../img/burger2.png") no-repeat center center !important;
+    transition: 0.5s;
+}
+.burger3 {
+    background: url("../img/burger3.png") no-repeat center center !important;
+    transition: 0.5s;
+}
+.burger4 {
+    background: url("../img/burger4.png") no-repeat center center !important;
+    transition: 0.5s;
+}
+.burger5 {
+    background: url("../img/burger5.png") no-repeat center center !important;
+    transition: 0.5s;
+}
 
-.ship-red {
-    background: url("../img/ship-red.png") no-repeat center center !important;
+.brend {
+    background: url("../img/logo.png") no-repeat center center !important;
     transition: 0.5s;
 }
-.ship-blue {
-    background: url("../img/ship-blue.png") no-repeat center center !important;
-    transition: 0.5s;
+
+#body-wrapp{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0,0,0, .3);
+    z-index: 9999999;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    display: none;
 }
-.asteroid {
-    background: url("../img/asteroid.png") no-repeat center center !important;
-    transition: 0.5s;
+
+.middle-block{
+    margin: auto 0;
+    color: #fff;
+    font-family: Verdana;
+}
+
+.middle-block p{
+    font-size: 22px;
+
+}
+
+.middle-block button{
+    background-color: #f4511e;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    visibility: hidden;
+}
+.middle-block button:hover{
+    opacity: 1;
+}
+
+.game-wrapp{
+    display: flex;
+}
+
+.block-game{
+
+}
+.block-info{
+    flex-basis: 40%;
+    text-align: center;
+    margin-top: 90px;
 }
