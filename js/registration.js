@@ -6,7 +6,7 @@ var checkbox = document.getElementById('checkbox');
 checkbox.onchange = function() {
 	var userName = document.getElementById('inputName').value;
 	if (userName === '') {
-		alert('vvedite ime');
+		alert('Лучше введи свое имя.');
 		checkbox.checked = false;
 	}else {
 		

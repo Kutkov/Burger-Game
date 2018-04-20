@@ -1,26 +1,29 @@
+var playerName = JSON.parse(localStorage.getItem('name'));
+console.log(playerName);
 // begin view
 
 var view = {
+	// Отображает счет
 	showCount: function (count) {
 		var elCount = document.getElementById('area_game__user_count--total');
 		elCount.innerHTML = count;
 	},
-
+	// Отображает сообщение
 	showMsg: function(msg) {
 		var elMessage = document.getElementById('area_game__user-message--msg');
 		elMessage.innerHTML = msg;
 	},
-
+	// Отображает найденный бургер
 	showBurger: function (id, color) {
-		var elShip = document.getElementById(id);
-		elShip.setAttribute('class', color);
+		var elBurger = document.getElementById(id);
+		elBurger.setAttribute('class', color);
 	},
-
-	showAsteroid: function(id) {
-		var elAsteroid = document.getElementById(id);
-		elAsteroid.setAttribute('class', 'brend');
+	// Отображает логотип (кетчап) при промохе
+	showLogo: function(id) {
+		var elLogo = document.getElementById(id);
+		elLogo.setAttribute('class', 'brend');
 	},
-
+	// Отображает блок с информацией перекрывающий игровое поле
 	showBodyWrapp: function() {
 		var bodyWrapp = document.getElementById('body-wrapp');
 		var btnNextRound = document.getElementById('next-round');
@@ -29,14 +32,14 @@ var view = {
 			btnNextRound.style.visibility = 'visible';	
 		}, 1500);
 	},
-
+	// Удаляет все бургеры и логотипы(промохи) с поля
 	clearClass: function() {
 		var elCell = document.getElementsByTagName("td");
 		for (var i = 0; i < elCell.length; i++) {
 			elCell[i].removeAttribute('class');
 		}
 	},
-
+	// При нажатии кнопки нового раунда скрывает блок перекрывающий игровое поле
 	hideBodyWrapp: function() {
 		var bodyWrapp = document.getElementById('body-wrapp');
 		var btnNextRound = document.getElementById('next-round');
@@ -47,10 +50,6 @@ var view = {
 
 	winner: function () {
 
-	},
-
-	lose: function () {
-		// alert('u lose');
 	}
 };
 
@@ -59,11 +58,13 @@ var view = {
 
 // begin model
 
+
 var model = {
-	sizeMap: 7,
-	numBurger: 6,
-	lengthBurger: 3,
-	destroyBurger: 0,
+	sizeMap: 7, // Размер карты
+	numBurger: 6, // Количество бургерных столов
+	lengthBurger: 3, // Количество бургеров на столе
+	destroyBurger: 0, // Найденные бургерные столы
+	missShot: [],
 
 	mapBurger: [
 		{ position: ["0", "0", "0"], damage: ["", "", ""], color: "burger0" },
@@ -75,6 +76,7 @@ var model = {
 
 	],
 
+	// Производит "выстрел" и проверку на поподание
 	shot: function (id) {
 
 		for (var i = 0; i < this.numBurger; i ++) {
@@ -103,9 +105,19 @@ var model = {
 				};
 			}
 		};
+		for (var j = -1; j < this.missShot.length; j++){
+			if(this.missShot[j] == id){
+				console.log('vot miss = ', this.missShot);
+			}else{
+				this.missShot[this.missShot.length] = id;
+				console.log('else');
+			}
+		};
+		
 		return id;
-	},
 
+	},
+	// Проверяет полностью найденный стол (3 бургера)
 	checkDestroyedBurger: function (burger) {
 		for (var i = 0; i < this.lengthBurger; i++) {
 			if (burger.damage[i] === "") {
@@ -114,7 +126,7 @@ var model = {
 		};
 		return true;
 	},
-
+	// Создаем позиции бургеров (вертикальную или горизонтальную)
 	createBurgerPos: function () {
 		var col = 0;
 		var row = 0;
@@ -139,7 +151,7 @@ var model = {
 
 		return burgerPosition;
 	},
-
+	// Проверяем на повторение позиции
 	checkRepeatsPos: function (position) {
 		for (var i = 0; i < this.numBurger; i++) {
 			var mapBurger = this.mapBurger[i];
@@ -152,7 +164,11 @@ var model = {
 
 		return false;
 	},
-
+	/* 
+		объединяет в себе функции createBurgerPos() и checkRepeatsPos(),
+		генерирует бургеры в массиве mapBurger[]
+		очищает попадания из прошлого раунда	
+	*/ 
 	createMapBurger: function () {
 		var position;
 		for (var i = 0; i < this.numBurger; i++) {
@@ -162,6 +178,14 @@ var model = {
 			} while (this.checkRepeatsPos(position));
 			this.mapBurger[i].position = position;
 			this.mapBurger[i].damage = ["", "", ""];
+		};
+	},
+
+	openMapBurger: function () {
+		for (var i = 0; i < this.numBurger; i++) {
+			for(var j =0; j < this.lengthBurger; j++){
+				view.showBurger(this.mapBurger[i].position[j], this.mapBurger[i].color);
+			}
 		};
 	}
 
@@ -173,45 +197,42 @@ var model = {
 // begin controller
 
 var controller = {
-
-	numShots: 10,
-
+	// количество допустимых выстрелов
+	numShots: 15,
+	// Сгенерировать бургеры
 	createBurger: function () {
 		model.createMapBurger();
 		view.showCount(this.numShots);
 	},
-
+	// Очистить поле и показать страницу поражения
 	clearMap: function() {
+		model.openMapBurger();
 		view.showBodyWrapp();
 		setTimeout(function(){
 			view.clearClass();
-				setTimeout(function(){
-					controller.numShots = 10;
-					controller.createBurger();
-				}, 500);
-		}, 1000);
-		// решил сделать всплывающий слой перекрывающий все поле, на нем можно разместить текст 
-
+			controller.numShots = 10;
+			controller.createBurger();
+		}, 1500);
 	},
-
+	// Объединяет в себе вызов методов из model и view
 	shotBurger: function (id) {
 		
-
 		if (id) {
 
 			var loss = model.shot(id);
 
 			if (loss === true) {
-				view.showMsg("Этот бургер уже найден!");
+				view.showMsg("Хей! Этот бургер уже найден.");
 			} else if (loss.status === 3) {
 				view.showBurger(loss.id, loss.color);
-				view.showMsg("Отлично три бургера найдены!");
+				view.showMsg("Отлично! Этот сет найден.");
 			} else if (loss.status === 1) {
 				view.showBurger(loss.id, loss.color);
-				view.showMsg("Ты ухватил эту булку!");
+				view.showMsg("Вот это Ketch up Burger");
 			} else if (typeof(loss) == 'string') {
-				view.showAsteroid(loss);
-				view.showMsg("Горячие котлетки были здесь");
+				console.log('loss = ', loss);
+				view.showLogo(loss);
+				view.showMsg(playerName+ ", " + "Ты достаточно мотивирован?");
 				this.numShots--;
 				view.showCount(this.numShots);
 				if(this.numShots === 0){
@@ -219,14 +240,18 @@ var controller = {
 				}
 			}
 			
-			if (loss && (model.destroyBurger === model.numBurger)) {
+			if (model.destroyBurger === model.numBurger) {
 				// var count = Math.round((model.numBurger * 3 / this.numShots) * 1000);
-				view.showMsg("Отлично! Ты нашел все ketch up и смог накормить друзей!");
+				view.showMsg("Ура! Ты нашел все Ketch up Burger и смог накормить друзей!");
 				// view.showCount(count);
 			}
 		}
 	},
-
+	/* 
+		при наведении курсора на элемент ячейки таблицы меняет стиль.
+		Также регистрирует событие onclick на наведенном элементе
+		Регистрирует событие onclick на кнопке вызова нового раунда
+	*/
 	hoverClick: function (id) {
 		var el = document.getElementById(id);
 		var btnNextRound = document.getElementById('next-round');
@@ -257,9 +282,7 @@ var controller = {
 		btnNextRound.onclick = function () {
 			view.hideBodyWrapp();
 		};
-
 	}
-
 };
 
 // end controller
@@ -271,34 +294,20 @@ var controller = {
 	var start = {
 
 		init: function () {
-			this.main();
 			this.control();
 			this.event();
 		},
 
-		// main() - Основной код для проекта, например подключать и настраивать плагины и т.д
-		main: function () {
-
-		},
-
 		// control() - Запускаем необходимые методы объекта "controller"
 		control: function () {
-
-			// Генерируем позиции кораблей и помещаем в массив spaceships
+			// Генерируем позиции бургеров и помещаем в массив spaceships
 			controller.createBurger();
-			// Создаем атрибут (data-title) для ячеек td (кроме 1 столбца и 1 ряда)
-			// controller.createDataTitle();
-
-
 		},
 		
 		// event() - Здесь мы регистрируем, вызываем "Обработчики событий"
 		event: function () {
-
 			controller.hoverClick("area_game__table");
-
 		}
-
 	};
 	
 	// запускаем init() - выполняет запуск всего кода

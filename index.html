@@ -75,15 +75,15 @@
 	<canvas id="myCanvas" height="200" width="800"></canvas>
 
 	<div class="container-element" style="max-width: 500px; margin: 30px auto;">
-		<span style="color: #fff;" class="element"></span>
+		<span style="color: #fff; white-space:pre;" id="element"></span>
 	</div>
 
     <form class="form-signin" id="form">
       <img class="mb-4" src="img/burger.png" alt="" width="80" height="72">
-      <input type="name" id="inputName" class="form-control" placeholder="Your name">
+      <input type="text" id="inputName" class="form-control" placeholder="Your name">
       <div class="checkbox mb-3">
         <label>
-          <input type="checkbox" value="remember-me" id="checkbox"> Соглашение
+          <input type="checkbox" value="remember-me" id="checkbox" onclick="this.parentNode.submit();"> Соглашение
         </label>
       </div>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
@@ -92,25 +92,34 @@
       <script src="js/registration.js"></script>
 
 	  <script>
+	  	form = document.getElementById('form');
+
+	  	form.addEventListener('keydown', function(event) {
+		    if(event.keyCode == 13) {
+		       event.preventDefault();
+		    }
+		 });
 
 	  	// typed begin
-	  	var typed = new Typed(".element", {
-		  strings: ["Lorem ipsum dolor sit amet^1000", "Lorem ipsum dolor consectetur adipisicing elit."],
-		  smartBackspace: false, // Default value
-		  typeSpeed: 40,
-		  startDelay: 2000,
-		  backSpeed: 80,
-		  onComplete: (self) => {activeLog();},
-		  smartBackspace: true
+	  	var typed = new Typed("#element", {
+		  strings:  [
+		  				"Добро пожаловать к нам на вечеренку. \n Я добавил немного дыма для атмосферы, надеюсь, ты не против? \n Хотя да зачем тебя спрашивать, я не чувствую твою мотивированность. ", "Добро пожаловать к нам на вечеренку. \n Я добавил немного дыма для атмосферы, надеюсь, ты не против? \n Смотрю ты пришел показать свою готовность к системе мотивации, \n уже видишь себя в чекап бургер, ну это вряд-ли сынок ", "Добро пожаловать к нам на вечеренку. \n Я добавил немного дыма для атмосферы, надеюсь, ты не против? \n Смотрю ты пришел показать свою готовность к системе мотивации, \n уже видишь себя в чекап бургер, тебе предстоит показать свой скилл \n у тебя его нет, ты ноль ", "Добро пожаловать к нам на вечеренку. \n Я добавил немного дыма для атмосферы, надеюсь, ты не против? \n Смотрю ты пришел показать свою готовность к системе мотивации, \n уже видишь себя в чекап бургер, тебе предстоит показать свой скилл \n чтобы попасть к нам на обед. Желаю удачи, хотя она тебе не поможет, \n у тебя нет шансов ", "Добро пожаловать к нам на вечеренку. \n Я добавил немного дыма для атмосферы, надеюсь, ты не против? \n Смотрю ты пришел показать свою готовность к системе мотивации, \n уже видишь себя в чекап бургер, тебе предстоит показать свой скилл \n чтобы попасть к нам на обед. Желаю удачи, надеюсь, скоро встретимся \n за одним столом Ketch up Burgers. Для начала тебе стоит указать свое \n имя и меня в завещании ", "Добро пожаловать к нам на вечеренку. \n Я добавил немного дыма для атмосферы, надеюсь, ты не против? \n Смотрю ты пришел показать свою готовность к системе мотивации, \n уже видишь себя в чекап бургер, тебе предстоит показать свой скилл \n чтобы попасть к нам на обед. Желаю удачи, надеюсь, скоро встретимся \n за одним столом Ketch up Burgers. Для начала тебе стоит указать свое \n имя и подтвердить уровень мотивации в соглашении."   
+		  			],
+		  smartBackspace: true, // Default value
+		  typeSpeed: 80,
+		  startDelay: 1000,
+		  backSpeed: 60,
+		  onComplete: (self) => {activeLog();}
 		});
 	  	// typed end
-	  	function activeLog(){
-	  		form = document.getElementById('form');
+
+	  	(function activeLog(){
+	  		// form = document.getElementById('form');
 	  		form.style.visibility = 'visible';
 	  		form.style.opacity = '1';
-	  	}
-	  	// smog begin
+	  	}());
 
+	  	// smog begin
 		canvasWidth = 1600;
 		canvasHeight = 200;
 
@@ -121,7 +130,7 @@
 
 		var puffs = 1;
 		var particlesPerPuff = 2000;
-		var img = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/85280/smoke2.png';
+		var img = 'img/smoke2.png';
 
 		var smokeImage = new Image();
 		smokeImage.src = img;
@@ -139,8 +148,7 @@
 
 		draw(new Date().getTime(), 3000)
 
-
-
+		
 		function addNewParticle(delay)
 		{
 
@@ -215,8 +223,6 @@
 		      ctx.drawImage(smokeImage, newLeft, newTop, newSize, newSize);
 		    }
 		  }
-
-
 
 		  //Repeat if there's still a living particle
 		  if (stillAlive)

@@ -1,27 +1,32 @@
+/* min-width: 1260px, min-height: 680px; */
 body {
-    background: #212733;
+    /*background: #212733;*/
+    background: url("../img/bg-all.png") no-repeat;
+    background-size: cover;
     margin: 0px;
     padding: 0px;
     font-family: Verdana;
     position: relative;
+    /*background: #ccc;*/
 }
 #area_game {
-    width: 1004px;
-    height: 1075px;
+    /*width: 1004px;*/
+    /*height: 1075px;*/
+    height: auto;
     margin: auto;
     padding: 0px;
     position: relative;
-    background: url("../img/bg.png") no-repeat;
+    /*background: url("../img/bg.jpg") no-repeat;*/
 }
 .area_game__user_count {
     color: #ccc;
-    /*float: left;*/
-    /*position: absolute;*/
-    top: 32px;
-    left: 10px;
     font-size: 20px;
     text-transform: uppercase;
     font-weight: 600;
+    padding: 30px 0;
+    background: rgba(0,0,0, .7);
+    border-radius: 0 0 10px 10px;
+    margin-left: 35px;
 }
 .area_game__user-message {
     text-align: center;
@@ -29,21 +34,28 @@ body {
     font-weight: 600;
     font-size: 36px;
     text-transform: uppercase;
+    padding: 20px 0;
+    background: rgba(0,0,0, .7);
+    border-radius: 10px 10px 0 0;
+    margin-left: 35px;
 }
 #area_game__user-message--msg {
     color: rgb(236, 236, 236);
     display: block;
     padding: 0 15px;
 }
-#area_game__table {
+/*#area_game__table {
     left: 173px;
     top: 98px;
-}
+}*/
 #area_game__table > tbody > tr > td {
     width: 118px;
     height: 118px;
     cursor: pointer;
     background: url("../img/border.png") repeat center;
+}
+#area_game__table > tbody > tr > td:first-child{
+    background: none;
 }
 #area_game__table > thead > tr > td > p,
 #area_game__table > tbody > tr > td > p {
@@ -51,11 +63,11 @@ body {
     font-size: 30px;
     text-align: center;
 }
-#area_game__table > tbody > tr > td:not(:nth-child(1)):hover::after {
+/*#area_game__table > tbody > tr > td:not(:nth-child(1)):hover::after {
     content: attr(data-title);
     padding-left: 48px;
     color: rgba(135, 204, 255, 0.72);
-}
+}*/
 #area_game__form {
     margin: 0px;
     padding: 7px;
@@ -75,33 +87,33 @@ body {
     background-color: #ECECEC;
 }
 
-.burger0 {
-    background: url("../img/burger0.png") no-repeat center center !important;
+#area_game .burger0 {
+    background: url("../img/burger0.png") no-repeat center center;
     transition: 0.5s;
 }
-.burger1 {
-    background: url("../img/burger1.png") no-repeat center center !important;
+#area_game .burger1 {
+    background: url("../img/burger1.png") no-repeat center center;
     transition: 0.5s;
 }
-.burger2 {
-    background: url("../img/burger2.png") no-repeat center center !important;
+#area_game .burger2 {
+    background: url("../img/burger2.png") no-repeat center center;
     transition: 0.5s;
 }
-.burger3 {
-    background: url("../img/burger3.png") no-repeat center center !important;
+#area_game .burger3 {
+    background: url("../img/burger3.png") no-repeat center center;
     transition: 0.5s;
 }
-.burger4 {
-    background: url("../img/burger4.png") no-repeat center center !important;
+#area_game .burger4 {
+    background: url("../img/burger4.png") no-repeat center center;
     transition: 0.5s;
 }
-.burger5 {
-    background: url("../img/burger5.png") no-repeat center center !important;
+#area_game .burger5 {
+    background: url("../img/burger5.png") no-repeat center center;
     transition: 0.5s;
 }
 
-.brend {
-    background: url("../img/logo.png") no-repeat center center !important;
+#area_game .brend {
+    background: url("../img/logo.png") no-repeat center center;
     transition: 0.5s;
 }
 
@@ -128,7 +140,7 @@ body {
 
 }
 
-.middle-block button{
+.button{
     background-color: #f4511e;
     border: none;
     color: white;
@@ -143,7 +155,7 @@ body {
     cursor: pointer;
     visibility: hidden;
 }
-.middle-block button:hover{
+.button:hover{
     opacity: 1;
 }
 
@@ -158,4 +170,41 @@ body {
     flex-basis: 40%;
     text-align: center;
     margin-top: 90px;
+    padding-left: 35px;
+    /*visibility: hidden;*/
+}
+
+@media screen and (max-width: 1658px) , screen and (max-height: 937px) {
+  #area_game__table > thead > tr > td > p, #area_game__table > tbody > tr > td > p{
+    margin: 5px;
+  }
+  #area_game__table > tbody > tr > td{
+    width: 90px;
+    height: 90px;
+    background: url(../img/border.png) no-repeat center;
+    background-size: contain;
+    padding: 0;
+  }
+  #area_game .brend{
+    background: url(../img/logo.png) no-repeat center center;
+    background-size: cover;
+  }
+  #area_game .burger0{
+    background-size: contain;
+  }
+  #area_game .burger1{
+    background-size: contain;
+  }
+  #area_game .burger2{
+    background-size: contain;
+  }
+  #area_game .burger3{
+    background-size: contain;
+  }
+  #area_game .burger4{
+    background-size: contain;
+  }
+  #area_game .burger5{
+    background-size: contain;
+  }
 }

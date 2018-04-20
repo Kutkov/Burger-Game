@@ -2,23 +2,32 @@
 <html lang="ru">
 <head>
 	<meta charset="UTF-8">
-	<title>Space Rangers</title>
+	<title>Burgers level 1</title>
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
+	<div class="start-page" style="display: none;">
+		<h2>Накорми своих коллег!</h2>
+		<p>Итак, в первой проверке на готовность к системе мотивации ты должен показать свою способность  интуитивно чувствовать расположение кетчап бургеров. Учитывая, что ты только входишь в элитные войска едаков кичапа, подскажу тебе пожалуй - на столе Бургеры располагаются по 3 штуки по горизонтали или по вертикали. Дальше ты уж как-то сам давай.</p>
+		<button id="start-game" class="button"></button>
+	</div>
+	<div class="winner-page" style="display: none;">
+		<h2>А ты оказался не промах!</h2>
+		<p>Чтож разогрелись, тебе стоит продолжать в том же духе, если у тебя еще достаточно мотивации.</p>
+	</div>
 	<div id="body-wrapp">
 		<div class="middle-block">
 			<img class="mb-4" src="img/burger.png" alt="" width="80" height="72">
 			<p>Попробуй снова!</p>
-			<button id="next-round">Next</button>
+			<button id="next-round" class="button">Start</button>
 		</div>
 	</div>
-
+	
 	<div class="game-wrapp">
 		<div class="block-info">
+
 			<div class="area_game__user-message">
-				<span>Burgers</span>
+				<span>Ketch up Burgers</span>
 				<br>
 				<span id="area_game__user-message--msg">
 					Game on native JS
@@ -26,9 +35,10 @@
 			</div>
 
 			<div class="area_game__user_count">
-				<span>Счет:</span>
+				<span><span class="name"></span>Счет:</span>
 				<span id="area_game__user_count--total">0</span>
 			</div>
+
 		</div>
 		<div class="block-game">
 			<div id="area_game">
