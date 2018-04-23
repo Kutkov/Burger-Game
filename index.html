@@ -83,7 +83,7 @@
       <input type="text" id="inputName" class="form-control" placeholder="Your name">
       <div class="checkbox mb-3">
         <label>
-          <input type="checkbox" value="remember-me" id="checkbox" onclick="this.parentNode.submit();"> Соглашение
+          <input type="checkbox" value="remember-me" id="checkbox"> Соглашение
         </label>
       </div>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
@@ -113,11 +113,10 @@
 		});
 	  	// typed end
 
-	  	(function activeLog(){
-	  		// form = document.getElementById('form');
+	  	function activeLog(){
 	  		form.style.visibility = 'visible';
 	  		form.style.opacity = '1';
-	  	}());
+	  	};
 
 	  	// smog begin
 		canvasWidth = 1600;
