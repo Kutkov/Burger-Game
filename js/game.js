@@ -1,7 +1,10 @@
-// begin view
-// var playerName = JSON.parse(localStorage.getItem('name'));
-// console.log(playerName);
+var playerName = JSON.parse(localStorage.getItem('name'));
+var spanName = document.getElementsByClassName('name');
+for(let i = 0; i < spanName.length; i++) {
+	spanName[i].innerHTML = playerName;
+}
 
+// begin view
 var view = {
 	// Отображает счет
 	showCount: function (count) {
@@ -194,7 +197,7 @@ var model = {
 // begin controller
 var controller = {
 	// количество допустимых выстрелов
-	numShots: 30,
+	numShots: 10,
 	// Сгенерировать бургеры
 	createBurger: function () {
 		model.createMapBurger();
@@ -203,6 +206,7 @@ var controller = {
 	// Очистить поле и показать страницу поражения
 	clearMap: function() {
 		model.openMapBurger();
+		model.destroyBurger = 0;
 		model.missShot.length = 0;
 		view.showBodyWrapp('body-wrapp', 'next-round');
 		setTimeout(function(){

@@ -33,7 +33,6 @@ body {
     color: rgb(135, 204, 255);
     font-weight: 600;
     font-size: 36px;
-    text-transform: uppercase;
     padding: 20px 0;
     background: rgba(0,0,0, .7);
     border-radius: 10px 10px 0 0;
@@ -43,6 +42,8 @@ body {
     color: rgb(236, 236, 236);
     display: block;
     padding: 0 15px;
+    font-size: 24px;
+    margin-top: 20px;
 }
 #area_game__table > tbody > tr > td {
     width: 118px;
@@ -126,6 +127,9 @@ body {
     margin: auto 0;
     color: #fff;
     font-family: Verdana;
+    background: rgba(0,0,0, .8);
+    border-radius: 15px;
+    padding: 20px 5px;
 }
 
 .middle-block p{
