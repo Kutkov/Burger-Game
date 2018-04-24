@@ -21,19 +21,22 @@ body {
 .area_game__user_count {
     color: #ccc;
     font-size: 20px;
-    text-transform: uppercase;
     font-weight: 600;
     padding: 30px 0;
     background: rgba(0,0,0, .7);
     border-radius: 0 0 10px 10px;
     margin-left: 35px;
 }
+#area_game__user_count--total{
+    font-size: 22px;
+    color: #fff;
+}
 .area_game__user-message {
     text-align: center;
     color: rgb(135, 204, 255);
     font-weight: 600;
     font-size: 36px;
-    padding: 20px 0;
+    padding: 20px 0 0;
     background: rgba(0,0,0, .7);
     border-radius: 10px 10px 0 0;
     margin-left: 35px;
@@ -172,6 +175,15 @@ body {
     /*visibility: hidden;*/
 }
 
+.container-element{
+    margin: 30px auto;
+}
+
+#element{
+    color: #fff;
+    white-space: pre;
+}
+
 @media screen and (max-width: 1658px) , screen and (max-height: 937px) {
   #area_game__table > thead > tr > td > p, #area_game__table > tbody > tr > td > p{
     margin: 5px;
@@ -205,4 +217,14 @@ body {
   #area_game .burger5{
     background-size: contain;
   }
+  .block-game{
+    padding-right: 5px;
+  }
+}
+
+@media screen and (max-width: 1300px) , screen and (max-height: 700px) {
+    #area_game__table > tbody > tr > td{
+        width: 80px;
+        height: 80px;
+    }
 }
